@@ -1,0 +1,44 @@
+Дан код программы на языке Ассемблера. Вам необходимо восстановить семантику данной программы и выразить её в виде программы на языке Си.
+
+                    %include "io.inc"
+
+                    SECTION .text
+
+                    GLOBAL CMAIN
+                    CMAIN:
+                        GET_UDEC        4, EAX
+
+                        MOV             EBX, EAX
+                        DEC             EBX
+                        XOR             EAX, EBX
+                        ADD             EAX, 1
+                        RCR             EAX, 1
+
+                        PRINT_UDEC      4, EAX
+                        NEWLINE
+
+                        XOR             EAX, EAX
+                        RET
+                
+На вход программе подается 32-битное беззнаковое число.
+
+
+#include <stdio.h>
+int main(void){
+    unsigned int n, g, k;
+    scanf("%u", &n);
+    if (n == 1 << 31){
+        n = 0;
+    }
+    k = n;
+    g = n;
+    g--;
+    n = n ^ g;
+    n++;
+    n >>=1;
+    if (k == 0){
+        n = 1 << 31;
+    }
+    printf("%u", n);
+    return 0;
+}
