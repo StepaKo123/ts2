@@ -1,0 +1,55 @@
+Задача 03-10: Простота
+
+В данной задаче вам необходимо найти наибольший делитель заданного числа, меньший самого числа.
+
+На вход программе подаётся одно целое число N (2 ≤ N ≤ 1000000000). Программа должна вывести единственное целое число — ответ задачи.
+
+%include "io.inc"
+section .bss
+    n resd 1
+    k resd 1
+section .text
+global CMAIN
+CMAIN:
+    GET_DEC 4, n
+    mov eax, dword[n]
+    mov edx, 0
+    mov ebx, 2
+    div ebx
+    mov dword[k], eax
+    cmp edx, 0
+    jz END
+    cmp dword[n], 1024
+    jg T
+    jmp F
+T:
+    mov eax, dword[n]
+    mov edx, 0
+    mov ebx, 32
+    div ebx
+    mov dword[k], eax
+F:
+    mov ecx, 3
+START:
+    cmp ecx, dword[k]
+    jge END
+    mov eax, dword[n]
+    mov edx, 0
+    div ecx
+    mov esi, edx
+    cmp edx, 0
+    jz END
+    add ecx, 2
+    jmp START
+END:
+    cmp edx, 0
+    jz TRUE
+    jmp FALSE
+TRUE:
+    PRINT_DEC 4, eax
+    jmp KON
+FALSE:
+    PRINT_DEC 4, 1
+KON:
+    xor eax, eax
+    ret
